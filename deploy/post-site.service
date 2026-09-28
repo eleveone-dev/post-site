@@ -1,0 +1,20 @@
+[Unit]
+Description=Eleve One Post Site
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/opt/post-site
+EnvironmentFile=/etc/post-site/post-site.env
+Environment=NODE_ENV=production
+Environment=HOST=127.0.0.1
+Environment=PORT=3000
+ExecStart=/usr/local/bin/node /opt/post-site/.output/server/index.mjs
+Restart=always
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
