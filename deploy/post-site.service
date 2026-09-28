@@ -9,8 +9,8 @@ WorkingDirectory=/opt/post-site
 EnvironmentFile=/etc/post-site/post-site.env
 Environment=NODE_ENV=production
 Environment=HOST=127.0.0.1
-Environment=PORT=3000
-ExecStart=/usr/local/bin/node /opt/post-site/.output/server/index.mjs
+Environment=PORT=3010
+ExecStart=/usr/local/bin/node /opt/post-site/server-runner.mjs
 Restart=always
 RestartSec=5
 NoNewPrivileges=true
