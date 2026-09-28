@@ -117,7 +117,7 @@ async function extractArchive(file: File): Promise<ExtractedEntry[]> {
 // Usa a origem atual (mesmo domínio onde a rota /s/$token existe),
 // evitando 404 quando o domínio configurado no código não aponta pra cá.
 function getPublicShareBase(): string {
-  return "https://sites.eleveone.com.br";
+  return window.location.origin;
 }
 
 function readAsDataURL(file: File): Promise<string> {

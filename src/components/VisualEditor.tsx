@@ -14,7 +14,7 @@ type Props = {
 };
 
 function getPublicShareBase(): string {
-  return "https://sites.eleveone.com.br";
+  return window.location.origin;
 }
 
 export default function VisualEditor({ siteId, initialTitle, initialHtml }: Props) {
