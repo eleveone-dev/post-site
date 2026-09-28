@@ -1,3 +1,3 @@
 import "./.output/server/index.mjs";
 
-await new Promise(() => {});
+setInterval(() => {}, 2 ** 31);
