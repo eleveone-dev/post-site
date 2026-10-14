@@ -442,17 +442,18 @@ function AppPage() {
   };
 
   const handlePublish = async () => {
-    let id = siteId;
-    if (!id) {
-      const firstUser = messages.find((m) => m.role === "user")?.content;
-      const res = await saveFn({ data: { title, prompt: firstUser, html } });
-      id = res.id;
-      setSiteId(id);
-      await qc.invalidateQueries({ queryKey: ["sites"] });
-    }
-    if (!id) return;
+    setError(null);
     setPublishing(true);
     try {
+      let id = siteId;
+      if (!id) {
+        const firstUser = messages.find((m) => m.role === "user")?.content;
+        const res = await saveFn({ data: { title, prompt: firstUser, html } });
+        id = res.id;
+        setSiteId(id);
+        await qc.invalidateQueries({ queryKey: ["sites"] });
+      }
+      if (!id) throw new Error("Não foi possível salvar o site antes de publicar.");
       const res = await publishFn({ data: { id } });
       setShareToken(res.token);
       setShareExpires(res.expiresAt);

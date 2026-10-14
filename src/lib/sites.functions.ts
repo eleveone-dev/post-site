@@ -23,7 +23,9 @@ export const saveSite = createServerFn({ method: "POST" })
         id: z.string().uuid().optional(),
         title: z.string().min(1).max(120),
         prompt: z.string().max(4000).optional(),
-        html: z.string().max(500000),
+        // Imported sites can include a sizeable HTML/CSS document. Media itself
+        // lives in Storage, so this remains a bounded document payload.
+        html: z.string().max(2_000_000),
       })
       .parse(input),
   )
