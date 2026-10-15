@@ -38,7 +38,7 @@ const MAX_IMAGE_BYTES = 5 * 1024 * 1024; // 5MB
 const MAX_FILE_BYTES = 200 * 1024; // 200KB text
 const MAX_ARCHIVE_BYTES = 25 * 1024 * 1024; // 25MB
 const MAX_ARCHIVE_ENTRIES = 300;
-const MAX_ARCHIVE_TOTAL_BYTES = 20 * 1024 * 1024; // 20MB uncompressed
+const MAX_ARCHIVE_TOTAL_BYTES = 50 * 1024 * 1024; // 50MB uncompressed
 
 function isArchiveFile(f: File): "zip" | "rar" | null {
   const name = (f.name || "").toLowerCase();
