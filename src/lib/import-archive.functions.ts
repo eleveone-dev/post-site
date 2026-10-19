@@ -48,6 +48,14 @@ const BINARY_EXT_MIME: Record<string, string> = {
   pdf: "application/pdf",
 };
 
+const UPLOAD_CONCURRENCY = 4;
+
+async function runInBatches<T>(items: T[], worker: (item: T) => Promise<void>) {
+  for (let i = 0; i < items.length; i += UPLOAD_CONCURRENCY) {
+    await Promise.all(items.slice(i, i + UPLOAD_CONCURRENCY).map(worker));
+  }
+}
+
 function extOf(path: string): string {
   const clean = path.split("?")[0].split("#")[0];
   const i = clean.lastIndexOf(".");
@@ -228,11 +236,14 @@ export const importArchive = createServerFn({ method: "POST" })
       urlMap.set(relPath, signed.data.signedUrl);
     };
 
-    // Pass 1: upload all non-HTML, non-CSS assets first.
-    for (const f of files) {
-      if (f.path === mainHtml) continue;
+    // Pass 1: upload all non-HTML, non-CSS assets first. Batching avoids a
+    // long request for asset-heavy packages without overloading the server.
+    const binaryAssets = files.filter((f) => {
+      if (f.path === mainHtml) return false;
       const ext = extOf(f.path);
-      if (ext === "html" || ext === "htm" || ext === "css") continue;
+      return ext !== "html" && ext !== "htm" && ext !== "css";
+    });
+    await runInBatches(binaryAssets, async (f) => {
       const mime = guessMime(f.path, f.mime);
       try {
         const bytes = base64ToBytes(f.contentBase64);
@@ -240,7 +251,7 @@ export const importArchive = createServerFn({ method: "POST" })
       } catch (e) {
         console.error("[import-archive] asset failed:", f.path, e);
       }
-    }
+    });
 
     // Pass 2: rewrite CSS files (their url(...) refs use pass-1 URLs), upload them.
     for (const f of files) {

@@ -297,6 +297,9 @@ function AppPage() {
         contentBase64: bytesToBase64(e.bytes),
       }));
       const res = await importArchiveFn({ data: { files: payloadFiles } });
+      if (!res?.html) {
+        throw new Error("A importação não foi concluída. Tente novamente.");
+      }
       setHtml(res.html);
       const nextTitle =
         title === "Sem título" && !siteId
