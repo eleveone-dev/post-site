@@ -23,10 +23,10 @@ export const saveSite = createServerFn({ method: "POST" })
         id: z.string().uuid().optional(),
         title: z.string().min(1).max(120),
         prompt: z.string().max(4000).optional(),
-        // Keep this aligned with the 50 MB uncompressed import-package cap.
+        // Keep this aligned with the 100 MB uncompressed import-package cap.
         // Imported HTML may contain inline assets, while separately uploaded
         // media still lives in Storage.
-        html: z.string().max(50 * 1024 * 1024),
+        html: z.string().max(100 * 1024 * 1024),
       })
       .parse(input),
   )
