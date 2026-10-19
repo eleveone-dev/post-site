@@ -36,7 +36,7 @@ type Attachment =
 const MAX_ATTACHMENTS = 20;
 const MAX_IMAGE_BYTES = 5 * 1024 * 1024; // 5MB
 const MAX_FILE_BYTES = 200 * 1024; // 200KB text
-const MAX_ARCHIVE_BYTES = 25 * 1024 * 1024; // 25MB
+const MAX_ARCHIVE_BYTES = 50 * 1024 * 1024; // 50MB
 const MAX_ARCHIVE_ENTRIES = 300;
 const MAX_ARCHIVE_TOTAL_BYTES = 50 * 1024 * 1024; // 50MB uncompressed
 
@@ -223,7 +223,7 @@ function AppPage() {
       const archiveKind = isArchiveFile(f);
       if (archiveKind) {
         if (f.size > MAX_ARCHIVE_BYTES) {
-          setError(`Pacote "${f.name}" excede 25MB.`);
+          setError(`Pacote "${f.name}" excede 50MB.`);
           continue;
         }
         next.push({
